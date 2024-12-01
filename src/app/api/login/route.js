@@ -65,6 +65,8 @@ export async function POST(req) {
         const user_ids = Object.keys(users_data);
         const { user_id, user_pass } = params;
 
+        console.log(`User_id: ${user_id}\nUser_pass: ${user_pass}`);
+
         if (user_ids.includes(user_id)) { // ユーザーが存在するなら
             const user_data = users_data[user_id];
 
@@ -72,6 +74,7 @@ export async function POST(req) {
                 const session_uuid = randomUUID();
                 return new Response(
                     JSON.stringify({
+                        "success": true,
                         "session_id": session_uuid
                     }),
                     {

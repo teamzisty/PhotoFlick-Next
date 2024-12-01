@@ -16,7 +16,6 @@ export async function POST(req) {
 
     if (content_type == allow_content_type) { // APIのContent-Typeを制限
         const body = await req.text();
-        console.log(body);
         let params = {};
         try {
             const temp = new URLSearchParams(body); // ちゃんとデータが読み取れる方式か
@@ -84,16 +83,17 @@ export async function POST(req) {
                 "success": false,
                 "message": "The user id used."
             });
-            return new Response(JSON.parse({
-                "success": false,
-                "message": "The user id used."
-            }),
-            {
-                status: 400,
-                headers: {
-                    'Content-Type': response_content_type
-                }
-            });
+            return new Response(
+                JSON.parse({
+                    "success": false,
+                    "message": "The user id used."
+                }),
+                {
+                    status: 400,
+                    headers: {
+                        'Content-Type': response_content_type
+                    }
+                });
         }
 
         let userObj = {
@@ -124,7 +124,13 @@ export async function POST(req) {
             JSON.stringify({
                 "success": false,
                 "message": "Allow Content-Type is " + allow_content_type
-            })
+            }),
+            {
+                status: 400,
+                headers: {
+                    'Content-Type': response_content_type
+                }
+            }
         );
     }
 }

@@ -2,6 +2,7 @@ import fs, { readFileSync } from "fs";
 
 const DB_PATH = "./src/app/db/database.json";
 const allow_content_type = "application/x-www-form-urlencoded";
+const response_content_type = "application/json";
 const need_keys = [
     "user_id",
     "user_name",
@@ -29,7 +30,13 @@ export async function POST(req) {
                 JSON.stringify({
                     "success": false,
                     "message": "Parameter needs user_id and user_name and user_pass and user_mail."
-                })
+                }),
+                {
+                    status: 200,
+                    headers: {
+                        "Content-Type": response_content_type
+                    }
+                }
             );
         }
 
@@ -59,7 +66,7 @@ export async function POST(req) {
                 {
                     "status": 400,
                     "headers": {
-                        "Content-Type": "application/json"
+                        "Content-Type": response_content_type
                     }
                 }
             );
@@ -84,13 +91,13 @@ export async function POST(req) {
             {
                 status: 400,
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': response_content_type
                 }
             });
         }
 
         let userObj = {
-            "user_id":   user_id,
+            "user_id": user_id,
             "user_name": user_name,
             "user_mail": user_mail,
             "user_pass": user_pass,
@@ -102,13 +109,13 @@ export async function POST(req) {
         fs.writeFileSync(DB_PATH, JSON.stringify(database));
 
         delete userObj['user_pass'];
-        
+
         return new Response(
             JSON.stringify(userObj),
             {
                 status: 200,
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": response_content_type
                 }
             }
         )

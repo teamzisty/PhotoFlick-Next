@@ -134,6 +134,8 @@ export async function POST(req) {
     database['user'] = users_data;
     database['photos'][photo_id] = photoObj;
 
+    fs.writeFileSync('./public/img/' + photo_id + '.png', img_file['tempfile']);
+
     fs.writeFileSync(DB_PATH, JSON.stringify(database));
 
     return new Response(

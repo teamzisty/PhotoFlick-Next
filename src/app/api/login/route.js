@@ -81,7 +81,33 @@ export async function POST(req) {
                         }
                     }
                 )
+            } else {
+                return new Response(
+                    JSON.stringify({
+                        "success": false,
+                        "message": "failed login"
+                    }), 
+                    {
+                        status: 403,
+                        headers: {
+                            "Content-Type": response_content_type
+                        }
+                    }
+                );
             }
+        } else {
+            return new Response(
+                JSON.stringify({
+                    "success": false,
+                    "message": "failed login"
+                }), 
+                {
+                    status: 403,
+                    headers: {
+                        "Content-Type": response_content_type
+                    }
+                }
+            );
         }
     } else {
         return new Response(

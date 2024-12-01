@@ -1,6 +1,5 @@
 import fs, { readFileSync } from "fs";
 import { readFile } from "fs/promises";
-import Head from "next/head";
 
 const DB_PATH = "./src/app/db/database.json";
 const allow_content_type = "x-www-form-urlencoded";
@@ -19,7 +18,7 @@ export async function POST(req) {
         const body = await req.text();
         let params;
         try {
-            params = new URLSearchParams(body);
+            params = new URLSearchParams(body); // ちゃんとデータが読み取れる方式か
         } catch (e) {
             return new Response(
                 JSON.stringify({
@@ -52,10 +51,42 @@ export async function POST(req) {
                 }
             );
         }
-        
+
+        const { user_id, user_name, user_mail, user_pass } = params;
+        console.log(`User_id: ${user_id}\nUser_name: ${user_name}\nUser_mail: ${user_mail}\nUser_pass: ${user_pass}`);
+
+        let database = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+        const users_data = database['user'];
+        const user_ids = Object.keys(users_data);
+
+        if (user_ids.includes(user_id)) {
+            return new Response(JSON.parse({
+                "sccess": false,
+                "message": "The user id used."
+            }),
+            {
+                status: 400,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+
+        let userObj = {
+            "user_id":   user_id,
+            "user_name": user_name,
+            "user_mail": user_mail,
+            "user_pass": user_pass
+        };
+
+        database['user'][user_id] = userObj;
+
+        fs.writeFileSync(DB_PATH, JSON.stringify(database));
+
+        delete userObj['user_pass'];
         
         return new Response(
-            JSON.stringify(params),
+            JSON.stringify(userObj),
             {
                 status: 200,
                 headers: {

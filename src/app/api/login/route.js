@@ -43,6 +43,7 @@ export async function POST(req) {
         for (let need_key of need_keys) {
             if (!keys.includes(need_key)) {
                 need_include = true;
+                break;
             }
         }
 
@@ -77,7 +78,7 @@ export async function POST(req) {
                 session_data[session_uuid] = user_id;
 
                 fs.writeFileSync(SESSION_PATH, JSON.stringify(session_data));
-                
+
                 return new Response(
                     JSON.stringify({
                         "success": true,

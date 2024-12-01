@@ -49,6 +49,7 @@ export async function POST(req) {
         for (let need_key of need_keys) {
             if (!keys.includes(need_key)) {
                 need_include = true;
+                break;
             }
         }
 

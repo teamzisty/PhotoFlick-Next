@@ -3,6 +3,7 @@ import fs from "fs";
 
 // 設定
 const DB_PATH = "./src/app/db/database.json";
+const SESSION_PATH = "./src/app/db/session.json";
 const allow_content_type = "application/x-www-form-urlencoded";
 const response_content_type = "application/json";
 const need_keys = [ // リクエスト時に必要なデータ
@@ -72,6 +73,11 @@ export async function POST(req) {
 
             if (user_data['user_pass'] == user_pass) { // パスワードがあっているなら
                 const session_uuid = randomUUID();
+                let session_data = JSON.parse(fs.readFileSync(SESSION_PATH, 'utf-8'));
+                session_data[session_uuid] = user_id;
+
+                fs.writeFileSync(SESSION_PATH, JSON.stringify(session_data));
+                
                 return new Response(
                     JSON.stringify({
                         "success": true,
@@ -83,7 +89,7 @@ export async function POST(req) {
                             'Content-Type': response_content_type
                         }
                     }
-                )
+                );
             } else {
                 return new Response(
                     JSON.stringify({

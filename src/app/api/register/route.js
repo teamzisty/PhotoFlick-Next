@@ -22,12 +22,12 @@ export async function POST(req) {
             params = Object.fromEntries(temp.entries());
         } catch (e) {
             console.log({
-                "sccess": false,
+                "success": false,
                 "message": "Parameter needs user_id and user_name and user_pass and user_mail."
             });
             return new Response(
                 JSON.stringify({
-                    "sccess": false,
+                    "success": false,
                     "message": "Parameter needs user_id and user_name and user_pass and user_mail."
                 })
             );
@@ -48,12 +48,12 @@ export async function POST(req) {
 
         if (need_include) { // 必要なパラメータがどれか足りなかったら
             console.log({
-                "sccess": false,
+                "success": false,
                 "message": "Parameter needs user_id and user_name and user_pass and user_mail."
             });
             return new Response(
                 JSON.stringify({
-                    "sccess": false,
+                    "success": false,
                     "message": "Parameter needs user_id and user_name and user_pass and user_mail."
                 }),
                 {
@@ -66,7 +66,7 @@ export async function POST(req) {
         }
 
         const { user_id, user_name, user_mail, user_pass } = params;
-        console.log(`User_id: ${user_id}\nUser_name: ${user_name}\nUser_mail: ${user_mail}\nUser_pass: ${user_pass}`);
+        console.log(`User_id:   ${user_id}\nUser_name: ${user_name}\nUser_mail: ${user_mail}\nUser_pass: ${user_pass}`);
 
         let database = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
         const users_data = database['user'];
@@ -74,11 +74,11 @@ export async function POST(req) {
 
         if (user_ids.includes(user_id)) {
             console.log({
-                "sccess": false,
+                "success": false,
                 "message": "The user id used."
             });
             return new Response(JSON.parse({
-                "sccess": false,
+                "success": false,
                 "message": "The user id used."
             }),
             {
@@ -115,7 +115,7 @@ export async function POST(req) {
     } else {
         return new Response(
             JSON.stringify({
-                "sccess": false,
+                "success": false,
                 "message": "Allow Content-Type is " + allow_content_type
             })
         );

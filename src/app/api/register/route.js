@@ -1,5 +1,4 @@
 import fs, { readFileSync } from "fs";
-import { readFile } from "fs/promises";
 
 const DB_PATH = "./src/app/db/database.json";
 const allow_content_type = "application/x-www-form-urlencoded";
